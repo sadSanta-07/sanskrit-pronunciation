@@ -35,6 +35,12 @@ def clean_from_upload(up):
 def n_laptop_refs(word):
     return len(list((LAPTOP_DIR / word).glob("*.wav")))
 
+def dev_correct_distances():
+    p = Path("outputs/live_log_dev.csv")
+    if not p.exists():
+        return []
+    d = pd.read_csv(p).drop_duplicates(["said", "distance"])
+    return d[(d.ref_set == "Laptop microphone") & (d.said == "krishna (correct)")].distance.tolist()
 
 catalog = pd.read_csv("outputs/catalog.csv")
 words = sorted(catalog[catalog.role == "reference"].word.unique())
@@ -49,12 +55,15 @@ st.sidebar.caption("Pick the set recorded on the same device you are speaking in
 ref_dir = str(LAPTOP_DIR / word) if ref_set == "Laptop microphone" else None
 
 A = get_assessor(word, ref_dir)
+dev = dev_correct_distances() if ref_set == "Laptop microphone" else []
+center = float(pd.Series(dev).mean()) if len(dev) >= 5 else A.mu
+default_thr = float(max(dev)) + 0.01 if len(dev) >= 5 else A.dist_thr
 st.sidebar.markdown(
     f"**Baseline:** {len(A.refs)} correct takes  \n"
-    f"typical distance {A.mu:.2f} (sd {A.sigma:.2f})  \n"
-    f"flag above {A.dist_thr:.2f}  \n"
+    f"typical distance of a correct attempt: {center:.2f}  \n"
     f"reference take: {A.primary}")
-st.sidebar.audio(A.wavs[A.primary])
+thr = st.sidebar.number_input("Flag threshold (distance)", value=round(default_thr, 2),
+                              step=0.01, key=f"thr_{ref_set}")
 with st.sidebar.expander("Per-take distances (spot outliers)"):
     st.dataframe(pd.DataFrame({"take": list(A.ref_dists),
                                "typical distance": [round(v, 2) for v in A.ref_dists.values()]}),
@@ -86,13 +95,15 @@ with tab_assess:
             st.warning(f"Detected {dur:.2f} s of speech; expected one short word (about 0.5-1.2 s). "
                        "Try again with a pause before and after the word.")
         r = A.assess(y)
+        matches = r["distance"] <= thr
+        score = 100 * 0.5 ** (max(0.0, r["distance"] - center) / max(thr - center, 0.05))
 
         c1, c2, c3 = st.columns(3)
-        c1.metric("Similarity", f"{r['score']:.0f}%")
-        c2.metric("Distance", f"{r['distance']:.2f}", f"correct takes average {A.mu:.2f}",
+        c1.metric("Similarity", f"{score:.0f}%")
+        c2.metric("Distance", f"{r['distance']:.2f}", f"typical correct take {center:.2f}",
                   delta_color="off")
-        c3.metric("Verdict", "Matches" if r["matches"] else "Differs")
-        if r["matches"]:
+        c3.metric("Verdict", "Matches" if matches else "Differs")
+        if matches:
             st.success("Within the normal variation of the correct recordings.")
         else:
             st.warning("Outside the normal variation of the correct recordings.")
@@ -108,25 +119,31 @@ with tab_assess:
 
         st.pyplot(make_figure(A, y, r))
         st.audio(str(wav))
+
         with st.expander("Log this attempt (for the evaluation)"):
             said = st.selectbox("What did you actually say?",
                                 ["krishna (correct)", "kisna", "krishn", "krisna", "krishnda", "other"])
             if st.button("Save to log"):
-                path = Path("outputs/live_log.csv")
-                path.parent.mkdir(exist_ok=True)
-                row = dict(time=datetime.now().isoformat(timespec="seconds"), ref_set=ref_set,
-                           said=said, distance=round(r["distance"], 3), score=round(r["score"], 1),
-                           verdict="Matches" if r["matches"] else "Differs",
-                           peak_sd=round(r["peak"], 1),
-                           window=f"{r['window'][0]:.2f}-{r['window'][1]:.2f}" if r["localized"] else "",
-                           mu=round(A.mu, 3), sigma=round(A.sigma, 3), thr=round(A.dist_thr, 3))
-                pd.DataFrame([row]).to_csv(path, mode="a", header=not path.exists(), index=False)
-                st.success(f"Logged. Total attempts so far: {len(pd.read_csv(path))}")
+                key = (said, round(r["distance"], 3))
+                if st.session_state.get("last_saved") == key:
+                    st.info("This attempt is already logged.")
+                else:
+                    path = Path("outputs/live_log.csv")
+                    path.parent.mkdir(exist_ok=True)
+                    row = dict(time=datetime.now().isoformat(timespec="seconds"), ref_set=ref_set,
+                               said=said, distance=round(r["distance"], 3), score=round(score, 1),
+                               verdict="Matches" if matches else "Differs",
+                               peak_sd=round(r["peak"], 1),
+                               window=f"{r['window'][0]:.2f}-{r['window'][1]:.2f}" if r["localized"] else "",
+                               mu=round(center, 3), sigma=round(A.sigma, 3), thr=round(thr, 3))
+                    pd.DataFrame([row]).to_csv(path, mode="a", header=not path.exists(), index=False)
+                    st.session_state["last_saved"] = key
+                    st.success(f"Logged. Total attempts so far: {len(pd.read_csv(path))}")
+
         st.caption(
-            f"The percentage is a display scale: 100% at the typical correct take, 50% at 3 standard "
-            f"deviations beyond it, calibrated on only {len(A.refs)} takes by one speaker. "
-            f"Scores are only meaningful when the references and your recording come from the same "
-            f"device and room.")
+            f"The percentage is a display scale: 100% at the typical correct attempt, 50% exactly at the "
+            f"flag threshold. Scores are only meaningful when the references and your recording come from "
+            f"the same device and room. The distance and the highlighted segment are the more reliable evidence.")
 
 with tab_cal:
     st.markdown(

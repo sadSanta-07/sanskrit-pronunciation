@@ -1,0 +1,19 @@
+time,ref_set,said,distance,score,verdict,peak_sd,window,mu,sigma,thr
+2026-10-23T13:34:05,Laptop microphone,krishna (correct),3.299,73.7,Matches,5.9,0.10-0.23,3.204,0.313,3.42
+2026-10-23T13:34:16,Laptop microphone,krishna (correct),3.191,100.0,Matches,5.7,0.03-0.25,3.204,0.313,3.42
+2026-10-23T13:34:29,Laptop microphone,krishna (correct),3.119,100.0,Matches,5.1,0.51-0.72,3.204,0.313,3.42
+2026-10-23T13:34:46,Laptop microphone,krishna (correct),3.393,54.5,Matches,8.3,0.09-0.23,3.204,0.313,3.42
+2026-10-23T13:34:56,Laptop microphone,krishna (correct),3.028,100.0,Matches,6.6,0.09-0.24,3.204,0.313,3.42
+2026-10-23T13:35:08,Laptop microphone,krishna (correct),3.009,100.0,Matches,8.1,0.12-0.23,3.204,0.313,3.42
+2026-10-23T13:35:32,Laptop microphone,kisna,3.419,50.2,Matches,6.8,0.10-0.30,3.204,0.313,3.42
+2026-10-23T13:35:40,Laptop microphone,kisna,3.515,36.8,Differs,7.5,0.10-0.31,3.204,0.313,3.42
+2026-10-23T13:35:47,Laptop microphone,kisna,3.535,34.5,Differs,6.9,0.10-0.31,3.204,0.313,3.42
+2026-10-23T13:36:06,Laptop microphone,krishn,3.978,8.3,Differs,8.2,0.61-0.79,3.204,0.313,3.42
+2026-10-23T13:36:17,Laptop microphone,krishn,3.973,8.5,Differs,7.0,0.59-0.78,3.204,0.313,3.42
+2026-10-23T13:36:26,Laptop microphone,krishn,3.679,21.8,Differs,8.0,0.61-0.76,3.204,0.313,3.42
+2026-10-23T13:36:48,Laptop microphone,krisna,3.451,45.2,Differs,7.3,0.19-0.29,3.204,0.313,3.42
+2026-10-23T13:36:57,Laptop microphone,krisna,3.385,55.9,Matches,8.0,0.10-0.28,3.204,0.313,3.42
+2026-10-23T13:37:07,Laptop microphone,krisna,3.266,81.9,Matches,6.8,0.10-0.28,3.204,0.313,3.42
+2026-10-23T13:37:25,Laptop microphone,krishnda,3.554,32.5,Differs,7.0,0.49-0.75,3.204,0.313,3.42
+2026-10-23T13:37:33,Laptop microphone,krishnda,3.481,41.1,Differs,9.6,0.49-0.69,3.204,0.313,3.42
+2026-10-23T13:37:58,Laptop microphone,krishnda,3.555,32.4,Differs,7.1,0.08-0.28,3.204,0.313,3.42
