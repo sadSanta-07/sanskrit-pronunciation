@@ -1,0 +1,6 @@
+label,role,frames,duration_s,active_s,centroid_mean,rolloff_mean,bandwidth_mean,flatness_mean,zcr_mean
+ref_01,reference,81,0.805,0.81,1303.538,2282.022,1275.613,0.027,0.105
+kisna,student,70,0.695,0.66,1340.304,2348.958,1453.954,0.015,0.103
+krishn,student,61,0.605,0.57,1186.642,2199.013,1332.271,0.017,0.072
+krishnda,student,79,0.785,0.78,1467.531,2445.112,1331.667,0.042,0.137
+krisna,student,90,0.895,0.87,1270.188,2395.833,1419.082,0.017,0.088

@@ -1,0 +1,21 @@
+time,ref_set,said,distance,score,verdict,peak_sd,window,mu,sigma,thr
+2026-10-23T13:15:11,Laptop microphone,krishna (correct),3.279,57.3,Differs,5.7,0.57-0.70,2.524,0.313,3.15
+2026-10-23T13:15:25,Laptop microphone,krishna (correct),3.22,59.8,Differs,6.5,0.00-0.18,2.524,0.313,3.15
+2026-10-23T13:15:37,Laptop microphone,krishna (correct),3.075,66.6,Matches,4.8,0.00-0.29,2.524,0.313,3.15
+2026-10-23T13:15:49,Laptop microphone,krishna (correct),2.966,72.2,Matches,5.7,0.11-0.28,2.524,0.313,3.15
+2026-10-23T13:16:00,Laptop microphone,krishna (correct),3.187,61.3,Differs,8.0,0.14-0.26,2.524,0.313,3.15
+2026-10-23T13:16:19,Laptop microphone,krishna (correct),3.409,52.0,Differs,7.4,0.19-0.35,2.524,0.313,3.15
+2026-10-23T13:16:39,Laptop microphone,krishna (correct),3.293,56.7,Differs,6.9,0.09-0.41,2.524,0.313,3.15
+2026-10-23T13:18:00,Laptop microphone,kisna,3.613,44.8,Differs,9.2,0.10-0.28,2.524,0.313,3.15
+2026-10-23T13:18:24,Laptop microphone,kisna,3.491,49.0,Differs,6.6,0.09-0.36,2.524,0.313,3.15
+2026-10-23T13:18:34,Laptop microphone,kisna,3.281,57.2,Differs,6.3,0.07-0.18,2.524,0.313,3.15
+2026-10-23T13:18:52,Laptop microphone,krishn,3.534,47.5,Differs,9.7,0.62-0.78,2.524,0.313,3.15
+2026-10-23T13:19:00,Laptop microphone,krishn,3.567,46.3,Differs,7.4,0.10-0.30,2.524,0.313,3.15
+2026-10-23T13:19:09,Laptop microphone,krishn,3.47,49.7,Differs,7.5,0.11-0.24,2.524,0.313,3.15
+2026-10-23T13:19:24,Laptop microphone,krisna,3.317,55.7,Differs,7.0,0.02-0.21,2.524,0.313,3.15
+2026-10-23T13:19:38,Laptop microphone,krisna,3.765,40.0,Differs,7.7,0.55-0.81,2.524,0.313,3.15
+2026-10-23T13:19:47,Laptop microphone,krisna,3.714,41.6,Differs,7.9,0.60-0.90,2.524,0.313,3.15
+2026-10-23T13:20:01,Laptop microphone,krishnda,3.655,43.4,Differs,8.3,0.59-0.70,2.524,0.313,3.15
+2026-10-23T13:20:15,Laptop microphone,krishnda,3.735,40.9,Differs,10.2,0.47-0.76,2.524,0.313,3.15
+2026-10-23T13:20:34,Laptop microphone,krishnda,4.176,29.5,Differs,8.9,0.48-0.91,2.524,0.313,3.15
+2026-10-23T13:20:35,Laptop microphone,krishnda,4.176,29.5,Differs,8.9,0.48-0.91,2.524,0.313,3.15

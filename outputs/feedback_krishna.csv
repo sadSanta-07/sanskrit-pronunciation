@@ -1,0 +1,5 @@
+type,start_s,end_s,where,peak_sd,takes_peaking_inside,cues
+kisna,0.36,0.49,middle,7.0,3/3,spectrum brighter (+28% centroid); more noise-like (+28% zero-crossings)
+krishn,0.63,0.86,end,10.8,3/3,spectrum darker (-29% centroid); less noise-like (-68% zero-crossings); quieter (-10.7 dB); shorter (-59% duration)
+krishnda,0.55,0.65,middle,11.7,3/3,spectrum brighter (+88% centroid); more noise-like (+273% zero-crossings)
+krisna,0.41,0.5,middle,6.4,3/3,quieter (-3.5 dB)
