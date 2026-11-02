@@ -7,3 +7,5 @@ soundfile
 matplotlib
 plotly
 imageio-ffmpeg
+FastAPI
+Uvicorn

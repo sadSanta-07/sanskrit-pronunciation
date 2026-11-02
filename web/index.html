@@ -1,0 +1,548 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f7f5ef" />
+  <meta
+    name="description"
+    content="Practice Sanskrit pronunciation with acoustic comparison, localized feedback and microphone calibration."
+  />
+  <title>Svara — Sanskrit Pronunciation Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+
+<body>
+  <div class="app-shell">
+
+    <header class="topbar">
+      <a class="brand" href="/">
+        <span class="brand-mark">स्व</span>
+        <span class="brand-copy">
+          <strong>svara</strong>
+          <small>PRONUNCIATION LAB</small>
+        </span>
+      </a>
+
+      <div class="topbar-right">
+        <span class="system-status">
+          <span class="status-dot"></span>
+          LOCAL ENGINE
+        </span>
+        <a class="docs-link" href="/docs" target="_blank" rel="noreferrer">
+          API docs <span>↗</span>
+        </a>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <div class="eyebrow">
+            <span class="eyebrow-line"></span>
+            SOUND · STRUCTURE · PRECISION
+          </div>
+
+          <h1>
+            Find the shape<br />
+            of <em>every sound.</em>
+          </h1>
+
+          <p>
+            Compare your Sanskrit pronunciation against recorded references.
+            See where your sound differs, not just whether it matches.
+          </p>
+        </div>
+
+        <div class="hero-symbol" aria-hidden="true">
+          <span>अ</span>
+          <small>शब्दः</small>
+        </div>
+      </section>
+
+      <section class="workspace">
+        <aside class="sidebar">
+          <div class="section-kicker">01 / SESSION SETUP</div>
+
+          <div class="field-group">
+            <label for="word-select">WORD TO PRACTICE</label>
+            <select id="word-select">
+              <option value="">Loading words...</option>
+            </select>
+          </div>
+
+          <div class="word-display">
+            <div>
+              <span class="word-display-label">SELECTED WORD</span>
+              <h2 id="word-script">कृष्ण</h2>
+              <p id="word-transliteration">kṛṣṇa</p>
+            </div>
+            <span class="word-index">01</span>
+          </div>
+
+          <div class="field-group">
+            <label for="reference-select">COMPARE AGAINST</label>
+            <select id="reference-select">
+              <option value="Phone recordings">Phone recordings</option>
+            </select>
+            <p class="field-hint">
+              Choose references recorded using the same device and room.
+            </p>
+          </div>
+
+          <div class="baseline-card">
+            <div class="baseline-heading">
+              <span>REFERENCE BASELINE</span>
+              <span class="baseline-icon">◉</span>
+            </div>
+
+            <div class="baseline-stat">
+              <strong id="baseline-center">—</strong>
+              <span>Typical correct distance</span>
+            </div>
+
+            <div class="baseline-stat">
+              <strong id="baseline-count">—</strong>
+              <span>Correct reference takes</span>
+            </div>
+
+            <div class="baseline-divider"></div>
+
+            <label for="threshold-input" class="threshold-label">
+              FLAG THRESHOLD
+              <span id="threshold-value">—</span>
+            </label>
+            <input
+              id="threshold-input"
+              type="range"
+              min="0.5"
+              max="8"
+              step="0.01"
+              value="3"
+            />
+            <p class="field-hint">
+              Recordings above this distance are flagged for review.
+            </p>
+
+            <details class="reference-details">
+              <summary>Per-take distances</summary>
+              <div id="reference-distances" class="reference-distance-list">
+                Loading...
+              </div>
+            </details>
+          </div>
+
+          <div class="sidebar-footer">
+            <span class="status-dot"></span>
+            <span>Assessment engine ready</span>
+          </div>
+        </aside>
+
+        <section class="main-panel">
+          <nav class="tabs" aria-label="Workspace">
+            <button class="tab-button active" data-tab="assess">
+              <span>01</span> Assess pronunciation
+            </button>
+            <button class="tab-button" data-tab="calibrate">
+              <span>02</span> Calibrate microphone
+            </button>
+          </nav>
+
+          <!-- ASSESSMENT -->
+          <section id="assess-panel" class="tab-panel active">
+            <div class="panel-heading">
+              <div>
+                <div class="section-kicker">02 / PRONUNCIATION CHECK</div>
+                <h2>Make it <em>sound right.</em></h2>
+                <p>Choose how you'd like to submit your pronunciation.</p>
+              </div>
+              <span class="step-tag">ASSESSMENT</span>
+            </div>
+
+            <div class="input-modes">
+              <button class="mode-button active" data-mode="record">
+                <span class="mode-icon">◎</span>
+                <span>
+                  <strong>Record</strong>
+                  <small>Use your microphone</small>
+                </span>
+              </button>
+
+              <button class="mode-button" data-mode="upload">
+                <span class="mode-icon">↥</span>
+                <span>
+                  <strong>Upload</strong>
+                  <small>Choose an audio file</small>
+                </span>
+              </button>
+
+              <button class="mode-button" data-mode="example">
+                <span class="mode-icon">♫</span>
+                <span>
+                  <strong>Examples</strong>
+                  <small>Use a sample recording</small>
+                </span>
+              </button>
+            </div>
+
+            <div class="input-card">
+
+              <div id="record-mode" class="mode-panel active">
+                <div class="record-content">
+                  <div class="record-orbit" id="record-orbit">
+                    <div class="record-core">
+                      <span id="record-icon">◎</span>
+                    </div>
+                  </div>
+
+                  <h3 id="record-title">Ready when you are</h3>
+                  <p id="record-description">
+                    Find a quiet place. Say the word once, clearly.
+                  </p>
+
+                  <div class="record-timer" id="record-timer">00:00</div>
+
+                  <button class="primary-button record-button" id="record-button">
+                    <span id="record-button-icon">●</span>
+                    <span id="record-button-text">Start recording</span>
+                  </button>
+
+                  <p class="microcopy">
+                    Allow microphone access when your browser asks.
+                  </p>
+                </div>
+              </div>
+
+              <div id="upload-mode" class="mode-panel">
+                <label class="upload-dropzone" for="audio-file">
+                  <span class="upload-symbol">↥</span>
+                  <strong>Drop your recording here</strong>
+                  <span>or click to browse your files</span>
+                  <small>WAV, MP3, M4A, AAC, OGG · Up to 25 MB</small>
+                </label>
+                <input
+                  id="audio-file"
+                  type="file"
+                  accept="audio/*,.m4a,.wav,.mp3,.aac,.ogg,.flac,.opus"
+                  hidden
+                />
+              </div>
+
+              <div id="example-mode" class="mode-panel">
+                <div class="example-intro">
+                  <span class="example-icon">♫</span>
+                  <div>
+                    <strong>Explore recorded attempts</strong>
+                    <p>
+                      These examples were recorded on a phone.
+                      Compare them against Phone recordings.
+                    </p>
+                  </div>
+                </div>
+                <label for="example-select">CHOOSE AN EXAMPLE</label>
+                <select id="example-select">
+                  <option value="">Select an example...</option>
+                </select>
+                <audio id="example-audio" controls hidden></audio>
+              </div>
+
+              <div class="selected-audio" id="selected-audio" hidden>
+                <div class="selected-audio-info">
+                  <span class="audio-file-icon">♫</span>
+                  <div>
+                    <strong id="selected-audio-name">recording.wav</strong>
+                    <small id="selected-audio-meta">Audio ready</small>
+                  </div>
+                </div>
+                <button class="text-button" id="remove-audio" type="button">
+                  Remove
+                </button>
+                <audio id="audio-preview" controls></audio>
+              </div>
+            </div>
+
+            <div class="assessment-actions">
+              <div class="action-note">
+                <span class="action-note-icon">↗</span>
+                <span>Your recording is processed locally by the Python engine.</span>
+              </div>
+              <button class="primary-button assess-button" id="assess-button" disabled>
+                Analyze pronunciation <span>→</span>
+              </button>
+            </div>
+
+            <div class="error-message" id="assess-error" hidden></div>
+
+            <!-- RESULTS -->
+            <section class="results-section" id="results-section" hidden>
+              <div class="results-heading">
+                <div>
+                  <div class="section-kicker">03 / ANALYSIS COMPLETE</div>
+                  <h2>Your sound, <em>decoded.</em></h2>
+                </div>
+                <span class="result-time" id="result-duration">—</span>
+              </div>
+
+              <div class="metrics-grid">
+                <article class="metric-card score-card">
+                  <span class="metric-label">SIMILARITY SCALE</span>
+                  <strong id="result-score">—</strong>
+                  <span class="metric-footnote">Display score · not probability</span>
+                </article>
+
+                <article class="metric-card">
+                  <span class="metric-label">DTW DISTANCE</span>
+                  <strong id="result-distance">—</strong>
+                  <span class="metric-footnote" id="result-center">Typical correct distance —</span>
+                </article>
+
+                <article class="metric-card">
+                  <span class="metric-label">ASSESSMENT</span>
+                  <strong id="result-verdict">—</strong>
+                  <span class="metric-footnote" id="result-verdict-detail">—</span>
+                </article>
+              </div>
+
+              <div class="verdict-banner" id="verdict-banner">
+                <span class="verdict-symbol" id="verdict-symbol">✓</span>
+                <div>
+                  <strong id="verdict-title">Within normal variation</strong>
+                  <p id="verdict-description">Your recording is within the reference range.</p>
+                </div>
+              </div>
+
+              <div class="analysis-card">
+                <div class="analysis-card-heading">
+                  <div>
+                    <div class="section-kicker">ACOUSTIC COMPARISON</div>
+                    <h3>Where the sound differs</h3>
+                  </div>
+                  <span class="chart-legend">
+                    <span></span> Difference beyond normal variation
+                  </span>
+                </div>
+
+                <div class="spectrogram-wrap">
+                  <img id="spectrogram-image" alt="Your recording, reference spectrogram and localized acoustic difference" />
+                </div>
+
+                <div class="localization" id="localization">
+                  <div class="localization-marker">↗</div>
+                  <div>
+                    <span class="localization-label">BIGGEST DIFFERENCE</span>
+                    <strong id="localization-time">—</strong>
+                    <p id="localization-position">—</p>
+                  </div>
+                  <span class="peak-badge" id="localization-peak">—</span>
+                </div>
+
+                <div class="no-localization" id="no-localization" hidden>
+                  No segment differs beyond the normal variation of the correct references.
+                </div>
+
+                <div class="cues-list" id="cues-list"></div>
+              </div>
+
+              <div class="analysis-card attempt-card">
+                <div>
+                  <div class="section-kicker">YOUR RECORDING</div>
+                  <h3>Listen back</h3>
+                </div>
+                <audio id="result-audio" controls></audio>
+              </div>
+
+              <div class="log-card">
+                <div class="log-copy">
+                  <div class="section-kicker">CONTRIBUTE TO EVALUATION</div>
+                  <h3>Log this attempt</h3>
+                  <p>Save the actual pronunciation label for evaluation.</p>
+                </div>
+
+                <div class="log-controls">
+                  <select id="log-label">
+                    <option value="krishna (correct)">Krishna (correct)</option>
+                    <option value="kisna">Kisna</option>
+                    <option value="krishn">Krishn</option>
+                    <option value="krisna">Krisna</option>
+                    <option value="krishnda">Krishnda</option>
+                    <option value="other">Other</option>
+                  </select>
+                  <button class="secondary-button" id="log-button">
+                    Save attempt
+                  </button>
+                </div>
+                <p class="log-status" id="log-status" aria-live="polite"></p>
+              </div>
+
+              <p class="disclaimer" id="result-disclaimer"></p>
+
+              <button class="reset-button" id="new-attempt-button">
+                ↻ Start another attempt
+              </button>
+            </section>
+          </section>
+
+          <!-- CALIBRATION -->
+          <section id="calibrate-panel" class="tab-panel">
+            <div class="panel-heading">
+              <div>
+                <div class="section-kicker">02 / DEVICE CALIBRATION</div>
+                <h2>Know your <em>microphone.</em></h2>
+                <p>Build a reference set using the device you'll practice with.</p>
+              </div>
+              <span class="step-tag">CALIBRATION</span>
+            </div>
+
+            <div class="calibration-explainer">
+              <div class="calibration-number">01</div>
+              <div>
+                <strong>Record one continuous clip</strong>
+                <p>
+                  Say the correct word 5–6 times. Pause about one second
+                  between each take. Use the microphone and room you'll
+                  use during assessment.
+                </p>
+              </div>
+            </div>
+
+            <div class="calibration-explainer">
+              <div class="calibration-number">02</div>
+              <div>
+                <strong>Review the detected takes</strong>
+                <p>
+                  The engine separates the clip into individual recordings.
+                  Listen and select the clean takes you want to save.
+                </p>
+              </div>
+            </div>
+
+            <div class="calibration-explainer">
+              <div class="calibration-number">03</div>
+              <div>
+                <strong>Save your laptop references</strong>
+                <p>
+                  At least four selected takes are required. Saving replaces
+                  the previous laptop reference set for this word.
+                </p>
+              </div>
+            </div>
+
+            <div class="calibration-card">
+              <div class="calibration-card-heading">
+                <div>
+                  <div class="section-kicker">RECORDING INPUT</div>
+                  <h3>Calibration recording</h3>
+                </div>
+                <span class="calibration-count" id="calibration-count">
+                  0 SAVED
+                </span>
+              </div>
+
+              <div class="calibration-record-controls">
+                <button class="secondary-button" id="cal-record-button">
+                  <span id="cal-record-icon">●</span>
+                  <span id="cal-record-text">Record calibration</span>
+                </button>
+
+                <label class="secondary-button file-button" for="cal-file">
+                  ↥ Upload recording
+                </label>
+                <input
+                  id="cal-file"
+                  type="file"
+                  accept="audio/*,.m4a,.wav,.mp3,.aac,.ogg,.flac,.opus"
+                  hidden
+                />
+              </div>
+
+              <div class="selected-audio calibration-audio" id="cal-audio-preview" hidden>
+                <div class="selected-audio-info">
+                  <span class="audio-file-icon">♫</span>
+                  <div>
+                    <strong id="cal-audio-name">calibration.wav</strong>
+                    <small id="cal-audio-meta">Ready to preview</small>
+                  </div>
+                </div>
+                <button class="text-button" id="cal-remove-audio">Remove</button>
+                <audio id="cal-audio-player" controls></audio>
+              </div>
+
+              <div class="gap-control">
+                <label for="gap-input">
+                  SILENCE BETWEEN TAKES
+                  <strong><span id="gap-value">0.40</span> s</strong>
+                </label>
+                <input
+                  id="gap-input"
+                  type="range"
+                  min="0.2"
+                  max="1"
+                  step="0.05"
+                  value="0.4"
+                />
+                <p>
+                  Lower this if multiple words are merged. Raise it if one
+                  word is being split into separate takes.
+                </p>
+              </div>
+
+              <button class="primary-button full-button" id="preview-calibration" disabled>
+                Detect takes <span>→</span>
+              </button>
+
+              <div class="error-message" id="cal-error" hidden></div>
+            </div>
+
+            <section class="takes-section" id="takes-section" hidden>
+              <div class="takes-heading">
+                <div>
+                  <div class="section-kicker">DETECTED SEGMENTS</div>
+                  <h3>Select your best takes</h3>
+                  <p id="takes-summary">—</p>
+                </div>
+                <button class="text-button" id="select-all-takes">Select all</button>
+              </div>
+
+              <div id="takes-list" class="takes-list"></div>
+
+              <div class="save-calibration-row">
+                <span id="selected-takes-count">0 selected · 4 required</span>
+                <button class="primary-button" id="save-calibration" disabled>
+                  Save references <span>→</span>
+                </button>
+              </div>
+              <div class="success-message" id="cal-success" hidden></div>
+            </section>
+
+            <div class="calibration-warning">
+              <span>!</span>
+              <p>
+                <strong>Important:</strong> Calibration takes recorded
+                back-to-back can be more similar than independent attempts.
+                A calibrated reference set does not guarantee a reliable
+                threshold for every future recording.
+              </p>
+            </div>
+          </section>
+        </section>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>SVARA / SANSKRIT PRONUNCIATION LAB</span>
+      <span>MFCC · SPECTRAL FEATURES · DYNAMIC TIME WARPING</span>
+    </footer>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="/app.js" defer></script>
+</body>
+</html>
